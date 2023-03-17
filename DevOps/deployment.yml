@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 3
+  containers:
+  - name: appcontainer
+    image: nginx:alpine
+    ports:
+    - containerPort: 80
+    volumes:
+    - name: persisent-volume

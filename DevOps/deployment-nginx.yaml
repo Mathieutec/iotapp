@@ -1,0 +1,39 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: iotapp
+  labels:
+    app: iotapp
+spec:
+  selector:
+    app: iotapp
+  ports:
+  - port: 8080 # source port inside the container
+    protocol: TCP
+    targetPort: 8080 # port communicated to other pods
+    nodePort: 31001 # accessible from outside: 30000-32600
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iotapp
+  labels:
+    app: iotapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: iotapp
+  template:
+    metadata:
+      labels:
+        app: iotapp
+    spec:
+      containers:
+      - name: iotappcontainer
+        image: nginx:1.14.2 # from dockerhub
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080  # from docker -p 80:3000
+          protocol: TCP
